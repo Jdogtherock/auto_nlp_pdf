@@ -49,4 +49,3 @@ def test_first_n_words(pdf_file):
     text = extract_text_from_pdf(pdf_file)
     first_50_words = first_n_words(text)
     assert len(first_50_words.split()) == 50
-    #print(f'first 50 words: {first_50_words}')

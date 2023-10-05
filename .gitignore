@@ -1,0 +1,2 @@
+# Ignore the entire directory named 'venv'
+venv3.8/

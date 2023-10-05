@@ -17,4 +17,3 @@ def test_summarize_text():
     assert isinstance(result, str)
     assert len(result) < len(text_apple)
     assert len(result) > 0
-    print(result)

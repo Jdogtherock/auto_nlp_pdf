@@ -134,25 +134,24 @@ elif st.session_state.page == "nlp":
     st.title("Automated NLP Results")
 
     @st.cache_data
-    def get_zeroshot_classifications(text):
+    def do_zero_shot_classify(text):
         with st.spinner("Performing Zero-Shot Classification..."):
-            pred_labels = get_classifications(text)
-            pred_label = classify(pred_labels)
+            pred_label = zero_shot_classify(st.session_state.text)
         st.subheader("Zero-Shot Classification")
         st.write(f"This text is predicted to be about {pred_label}.")
         return pred_label
 
-    pred_label = get_zeroshot_classifications(st.session_state.text)
+    pred_label = do_zero_shot_classify(st.session_state.text)
 
     @st.cache_data
-    def summarize_text_app(text):
+    def do_summarize(text):
         with st.spinner("Performing Summarization..."):
             summary = summarize_text(text)
         st.subheader("Summary")
         st.write(summary)
         return summary
 
-    summary = summarize_text_app(st.session_state.text)
+    summary = do_summarize(st.session_state.text)
 
     @st.cache_data
     def do_ner(text):
@@ -164,7 +163,7 @@ elif st.session_state.page == "nlp":
             [f"| {key} | {value} |" for key, value in ner_results.items()]
         )
         st.markdown(markdown_str)
-        key_descriptions = """\n| Key   | Description |\n|-------|-------------|\n| B-MIS | Beginning of a miscellaneous entity right after another miscellaneous entity |\n| I-MIS | Miscellaneous entity |\n| B-PER | Beginning of a person’s name right after another person’s name |\n| I-PER | Person’s name |\n| B-ORG | Beginning of an organization right after another organization |\n| I-ORG | Organization |\n| B-LOC | Beginning of a location right after another location |\n| I-LOC | Location |"""
+        key_descriptions = """\n| Key   | Description |\n|-------|-------------|\n| PER | PERSON |\n| MIS | MISCELLANEOUS |\n| LOC | LOCATION |\n| ORG | ORGANIZATION |\n"""
         st.markdown(key_descriptions)
         return markdown_str + "\n" + key_descriptions
 
