@@ -9,6 +9,8 @@ import zipfile
 import io
 from dotenv import load_dotenv
 load_dotenv()
+import nltk
+nltk.download('stopwords')
 
 with st.sidebar:
     st.image(
