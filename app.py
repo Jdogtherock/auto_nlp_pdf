@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import nltk
 nltk.download('stopwords')
+nltk.download('punkt')
 
 with st.sidebar:
     st.image(
