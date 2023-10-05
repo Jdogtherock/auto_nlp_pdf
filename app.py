@@ -7,6 +7,8 @@ from summarize import *
 from NER import *
 import zipfile
 import io
+from dotenv import load_dotenv
+load_dotenv()
 
 with st.sidebar:
     st.image(
@@ -14,10 +16,10 @@ with st.sidebar:
     )
     st.title("AutoLLM - By Jeffrey Gordon")
     st.info(
-        "This application was built to automate the NLP pipeline, specifically for utilizing large language models for seq2seq purposes. Enter a PDF file with text, and watch the magic happen! :triumph:"
+        "This application automates the Generative LLM pipeline, by performing the most common Large Language Model Tasks with a simple click. Enter a PDF file with text, and watch the magic happen! :triumph:"
     )
     st.info(
-        "NOTE: when the next step is ready to begin, the button will appear below, on the main page. To start over, refresh the webpage."
+        "NOTE: when the next step is ready, the button will appear below. To start over, refresh the webpage."
     )
 
 # persisting variables i want to keep track of

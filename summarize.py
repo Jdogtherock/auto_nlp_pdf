@@ -3,6 +3,7 @@ from tools import *
 from typing import *
 from collections import Counter
 import nltk
+import os
 
 model = "sshleifer/distilbart-cnn-12-6"
 tokenizer = AutoTokenizer.from_pretrained(model, use_fast=True)
@@ -11,7 +12,8 @@ chunk_size = 512
 import requests
 
 API_URL = "https://api-inference.huggingface.co/models/sshleifer/distilbart-cnn-12-6"
-headers = {"Authorization": "Bearer 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"}
+API_KEY = os.getenv("API_KEY")
+headers = {"Authorization": API_KEY}
 
 def query(payload):
 	response = requests.post(API_URL, headers=headers, json=payload)

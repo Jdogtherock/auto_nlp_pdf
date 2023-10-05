@@ -3,6 +3,8 @@ from collections import *
 from typing import *
 from tools import *
 import nltk
+import os
+
 
 CANDIDATE_LABELS = [
     "Entertainment",
@@ -24,7 +26,8 @@ chunk_size = 512
 import requests
 
 API_URL = "https://api-inference.huggingface.co/models/cross-encoder/nli-distilroberta-base"
-headers = {"Authorization": "Bearer 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"} # need to make the token a secret
+API_KEY = os.getenv("API_KEY")
+headers = {"Authorization": API_KEY} # need to make the token a secret
 
 def query(payload):
     """
