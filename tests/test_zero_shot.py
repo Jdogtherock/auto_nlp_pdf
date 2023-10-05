@@ -20,12 +20,10 @@ def test_classify():
     assert isinstance(chunks, list)
     assert all(len(chunk) <= chunk_size and len(chunk) > 0 for chunk in chunks)
 
-    pred_labels = get_classifications(text)
+    pred_labels = get_zero_shot_classifications(text)
     assert isinstance(pred_labels, dict)
 
-    pred_label = classify(pred_labels)
+    pred_label = zero_shot_classify(text)
     assert isinstance(pred_label, str)
-
-    print(pred_label)
 
 

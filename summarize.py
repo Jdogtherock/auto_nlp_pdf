@@ -3,11 +3,30 @@ from tools import *
 from typing import *
 from collections import Counter
 import nltk
+import os
 
 model = "sshleifer/distilbart-cnn-12-6"
 tokenizer = AutoTokenizer.from_pretrained(model, use_fast=True)
-summarize = pipeline("summarization", model=model)
 chunk_size = 512
+
+import requests
+
+API_URL = "https://api-inference.huggingface.co/models/sshleifer/distilbart-cnn-12-6"
+API_KEY = os.getenv("API_KEY")
+headers = {"Authorization": API_KEY}
+
+def query(payload):
+	response = requests.post(API_URL, headers=headers, json=payload)
+	return response.json()
+
+def summarize_query(text: str) -> str:
+    """
+    Used to summarize a chunk of text using API
+    """
+    output = query({
+	"inputs": text,
+    })
+    return output
 
 def summarize_text(text: str) -> str:
     """
@@ -17,6 +36,7 @@ def summarize_text(text: str) -> str:
     output = ''
     for chunk in chunks:
         text = tokenizer.decode(chunk, skip_special_tokens=True)
-        summary = summarize(text, min_length = 0, max_length = 128)
-        output += '\t' + summary[0]['summary_text'] + '\n'
+        summary = summarize_query(text)[0]["summary_text"]
+        output += '\t' + summary + '\n\n'
     return output
+
