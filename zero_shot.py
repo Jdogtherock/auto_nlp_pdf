@@ -25,6 +25,7 @@ chunk_size = 512
 
 ENDPOINT = "https://api-inference.huggingface.co/models/cross-encoder/nli-distilroberta-base"
 KEY = os.getenv("API_KEY")
+print(f"Length of API_KEY: {len(KEY) if KEY else 'API_KEY not loaded'}")
 headers = {"Authorization": f"Bearer {KEY}"}
 
 def query(payload):
