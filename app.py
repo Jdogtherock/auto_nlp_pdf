@@ -75,7 +75,7 @@ if st.session_state.page == "upload":
             )
 
 elif st.session_state.page == "eda":
-    @st.cache_data
+    @st.cache_data(persist="disk")
     def perform_eda(text):
         with st.spinner("Performing EDA..."):
             eda_dict = combined_eda(text)
@@ -139,7 +139,7 @@ elif st.session_state.page == "eda":
 elif st.session_state.page == "nlp":
     st.title("Automated NLP Results")
 
-    @st.cache_data
+    @st.cache_data(persist="disk")
     def do_zero_shot_classify(text):
         with st.spinner("Performing Zero-Shot Classification..."):
             pred_label = zero_shot_classify(st.session_state.text)
@@ -149,7 +149,7 @@ elif st.session_state.page == "nlp":
 
     pred_label = do_zero_shot_classify(st.session_state.text)
 
-    @st.cache_data
+    @st.cache_data(persist="disk")
     def do_summarize(text):
         with st.spinner("Performing Summarization..."):
             summary = summarize_text(text)
@@ -159,7 +159,7 @@ elif st.session_state.page == "nlp":
 
     summary = do_summarize(st.session_state.text)
 
-    @st.cache_data
+    @st.cache_data(persist="disk")
     def do_ner(text):
         with st.spinner(f"Performing Named Entity Recognition..."):
             ner_results = ner(text)
@@ -209,8 +209,6 @@ elif st.session_state.page == "nlp":
 
 elif st.session_state.page == "QA":
     st.title("PDF Chatbot")
-    st.subheader("How QA Works with Large Language Models")
-    st.image(
-        "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*exGkrJ77gzDUt-LJehimeg.png"
-    )
+    st.subheader("Document QA with LLM and VectorDB")
+    st.image("QA_Design.png")
 

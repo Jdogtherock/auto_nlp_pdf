@@ -25,7 +25,7 @@ chunk_size = 512
 
 ENDPOINT = "https://api-inference.huggingface.co/models/cross-encoder/nli-distilroberta-base"
 KEY = os.getenv("API_KEY")
-headers = {"Authorization": f"Bearer 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"}
+headers = {"Authorization": f"Bearer {KEY}"}
 
 def query(payload):
     """
@@ -52,9 +52,7 @@ def get_zero_shot_classifications(text: str) -> Dict[str, int]:
     pred_labels = defaultdict(int)
     for chunk in chunks:
         text = tokenizer.decode(chunk, skip_special_tokens=True)
-        pred_label = zero_shot_query(text)
-        print(pred_label)
-        f
+        pred_label = zero_shot_query(text)["labels"][0]
         pred_labels[pred_label] += 1
     return pred_labels
 

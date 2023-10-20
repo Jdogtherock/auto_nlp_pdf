@@ -10,13 +10,13 @@ model = "sshleifer/distilbart-cnn-12-6"
 tokenizer = AutoTokenizer.from_pretrained(model, use_fast=True)
 chunk_size = 512
 
-API_ENDPOINT = "https://api-inference.huggingface.co/models/sshleifer/distilbart-cnn-12-6"
-API_KEY = os.getenv("API_KEY")
-headers = {"Authorization": f"Bearer {API_KEY}"}
+ENDPOINT = "https://api-inference.huggingface.co/models/sshleifer/distilbart-cnn-12-6"
+KEY = os.getenv("API_KEY")
+headers = {"Authorization": f"Bearer {KEY}"}
 
 def query(payload):
     data = json.dumps(payload)
-    response = requests.request("POST", API_KEY, headers=headers, data=data)
+    response = requests.post(ENDPOINT, headers=headers, data=data)
     return json.loads(response.content.decode("utf-8"))
 
 def summarize_query(text: str) -> str:
@@ -36,7 +36,7 @@ def summarize_text(text: str) -> str:
     output = ''
     for chunk in chunks:
         text = tokenizer.decode(chunk, skip_special_tokens=True)
-        summary = summarize_query(text)["summary_text"]
+        summary = summarize_query(text)[0]["summary_text"]
         output += '\t' + summary + '\n\n'
     return output
 

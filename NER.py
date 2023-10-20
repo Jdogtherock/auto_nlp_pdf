@@ -10,19 +10,20 @@ model ="dslim/bert-base-NER"
 tokenizer = AutoTokenizer.from_pretrained(model, use_fast=True)
 chunk_size = 512
 
-API_ENDPOINT = "https://api-inference.huggingface.co/models/dslim/bert-base-NER"
-API_KEY = os.getenv("API_KEY")
-headers = {"Authorization": f"Bearer {API_KEY}"}
+ENDPOINT = "https://api-inference.huggingface.co/models/dslim/bert-base-NER"
+KEY = os.getenv("API_KEY")
+headers = {"Authorization": f"Bearer {KEY}"}
 
 def query(payload):
     data = json.dumps(payload)
-    response = requests.request("POST", API_KEY, headers=headers, data=data)
+    response = requests.post(ENDPOINT, headers=headers, data=data)
     return json.loads(response.content.decode("utf-8"))
 
 def ner_query(text):
     output = query({
 	"inputs": text,
     })
+    print(output)
     return output
 
 def ner(text: str) -> Dict[str, Set[str]]:

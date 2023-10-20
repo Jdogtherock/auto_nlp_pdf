@@ -1,6 +1,8 @@
 import sys
 import os
 from typing import *
+from dotenv import load_dotenv
+load_dotenv()
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 parent_dir = os.path.dirname(current_dir)
