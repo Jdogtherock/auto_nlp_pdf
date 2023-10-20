@@ -9,7 +9,12 @@ import zipfile
 import io
 from dotenv import load_dotenv
 load_dotenv()
-import nltk
+
+with open('download_nltk_data.py', 'r') as file:
+    code = file.read()
+
+exec(code)
+
 
 with st.sidebar:
     st.image(
