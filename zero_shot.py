@@ -1,10 +1,10 @@
-from transformers import pipeline, AutoTokenizer
+from transformers import AutoTokenizer
 from collections import *
 from typing import *
 from tools import *
-import nltk
 import os
-
+import json
+import requests
 
 CANDIDATE_LABELS = [
     "Entertainment",
@@ -23,17 +23,15 @@ model = 'cross-encoder/nli-distilroberta-base'
 tokenizer = AutoTokenizer.from_pretrained(model, use_fast=True)
 chunk_size = 512
 
-import requests
-
-API_URL = "https://api-inference.huggingface.co/models/cross-encoder/nli-distilroberta-base"
-API_KEY = os.getenv("API_KEY")
-headers = {"Authorization": API_KEY} # need to make the token a secret
+ENDPOINT = "https://api-inference.huggingface.co/models/cross-encoder/nli-distilroberta-base"
+KEY = os.getenv("API_KEY")
+headers = {"Authorization": f"Bearer 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"}
 
 def query(payload):
     """
-    Defines the method to call the zero_shot API
+    Defines the method to call the zero_shot API, and return the result
     """
-    response = requests.post(API_URL, headers=headers, json=payload)
+    response = requests.post(ENDPOINT, headers=headers, json=payload)
     return response.json()
 
 def zero_shot_query(text):
@@ -54,7 +52,9 @@ def get_zero_shot_classifications(text: str) -> Dict[str, int]:
     pred_labels = defaultdict(int)
     for chunk in chunks:
         text = tokenizer.decode(chunk, skip_special_tokens=True)
-        pred_label = zero_shot_query(text)["labels"][0]
+        pred_label = zero_shot_query(text)
+        print(pred_label)
+        f
         pred_labels[pred_label] += 1
     return pred_labels
 

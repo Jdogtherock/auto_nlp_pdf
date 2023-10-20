@@ -1,25 +1,25 @@
 from transformers import AutoTokenizer
-from transformers import pipeline
 from tools import *
 from typing import *
 import collections
 import os
+import requests
+import json
 
 model ="dslim/bert-base-NER"
 tokenizer = AutoTokenizer.from_pretrained(model, use_fast=True)
 chunk_size = 512
 
-import requests
-
-API_URL = "https://api-inference.huggingface.co/models/dslim/bert-base-NER"
+API_ENDPOINT = "https://api-inference.huggingface.co/models/dslim/bert-base-NER"
 API_KEY = os.getenv("API_KEY")
-headers = {"Authorization": API_KEY}
+headers = {"Authorization": f"Bearer {API_KEY}"}
 
 def query(payload):
-	response = requests.post(API_URL, headers=headers, json=payload)
-	return response.json()
+    data = json.dumps(payload)
+    response = requests.request("POST", API_KEY, headers=headers, data=data)
+    return json.loads(response.content.decode("utf-8"))
 
-def ner_chunk(text):
+def ner_query(text):
     output = query({
 	"inputs": text,
     })
@@ -33,7 +33,7 @@ def ner(text: str) -> Dict[str, Set[str]]:
     chunks = chunk_text(text, chunk_size, tokenizer)
     for chunk in chunks:
         text = tokenizer.decode(chunk, skip_special_tokens=True)
-        ner_results = ner_chunk(text)
+        ner_results = ner_query(text)
         for entry in ner_results:
             entity_group = entry.get("entity_group")
             word = entry.get("word")

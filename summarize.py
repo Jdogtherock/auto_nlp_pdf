@@ -1,23 +1,23 @@
-from transformers import pipeline, AutoTokenizer
+from transformers import AutoTokenizer
 from tools import *
 from typing import *
 from collections import Counter
-import nltk
 import os
+import json
+import requests
 
 model = "sshleifer/distilbart-cnn-12-6"
 tokenizer = AutoTokenizer.from_pretrained(model, use_fast=True)
 chunk_size = 512
 
-import requests
-
-API_URL = "https://api-inference.huggingface.co/models/sshleifer/distilbart-cnn-12-6"
+API_ENDPOINT = "https://api-inference.huggingface.co/models/sshleifer/distilbart-cnn-12-6"
 API_KEY = os.getenv("API_KEY")
-headers = {"Authorization": API_KEY}
+headers = {"Authorization": f"Bearer {API_KEY}"}
 
 def query(payload):
-	response = requests.post(API_URL, headers=headers, json=payload)
-	return response.json()
+    data = json.dumps(payload)
+    response = requests.request("POST", API_KEY, headers=headers, data=data)
+    return json.loads(response.content.decode("utf-8"))
 
 def summarize_query(text: str) -> str:
     """
@@ -36,7 +36,7 @@ def summarize_text(text: str) -> str:
     output = ''
     for chunk in chunks:
         text = tokenizer.decode(chunk, skip_special_tokens=True)
-        summary = summarize_query(text)[0]["summary_text"]
+        summary = summarize_query(text)["summary_text"]
         output += '\t' + summary + '\n\n'
     return output
 
