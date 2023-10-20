@@ -31,6 +31,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Download NLTK Data
+      run: |
+        python download_nltk_data.py
+
     - name: Run tests
       run: |
         pytest tests/
