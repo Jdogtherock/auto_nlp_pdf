@@ -28,10 +28,14 @@ def summarize_query(text: str) -> str:
     })
     return output
 
-def summarize_text(text: str) -> str:
+def summarize_text(text: str, api_key = None) -> str:
     """
     Summarizes each chunk of text, then outputs the concatenation.
     """
+    if not api_key:
+        KEY = os.getenv("API_KEY")
+    else:
+        KEY = api_key
     chunks = chunk_text(text, chunk_size, tokenizer)
     output = ''
     for chunk in chunks:

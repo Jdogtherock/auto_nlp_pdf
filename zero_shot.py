@@ -25,7 +25,6 @@ chunk_size = 512
 
 ENDPOINT = "https://api-inference.huggingface.co/models/cross-encoder/nli-distilroberta-base"
 KEY = os.getenv("API_KEY")
-print(f"Length of API_KEY: {len(KEY) if KEY else 'API_KEY not loaded'}")
 headers = {"Authorization": f"Bearer {KEY}"}
 
 def query(payload):
@@ -57,10 +56,14 @@ def get_zero_shot_classifications(text: str) -> Dict[str, int]:
         pred_labels[pred_label] += 1
     return pred_labels
 
-def zero_shot_classify(text: str) -> str:
+def zero_shot_classify(text: str, api_key = None) -> str:
     """
     Full Zero Shot Classification
     """
+    if not api_key:
+        KEY = os.getenv("API_KEY")
+    else:
+        KEY = api_key
     pred_labels = get_zero_shot_classifications(text)
     return max(pred_labels, key=pred_labels.get)
 

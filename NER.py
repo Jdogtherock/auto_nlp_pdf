@@ -26,10 +26,14 @@ def ner_query(text):
     print(output)
     return output
 
-def ner(text: str) -> Dict[str, Set[str]]:
+def ner(text: str, api_key = None) -> Dict[str, Set[str]]:
     """
     Predicts the named entities and returns them in type of entity:[words that are of that entity type] dictionary format
     """
+    if not api_key:
+        KEY = os.getenv("API_KEY")
+    else:
+        KEY = api_key
     ners = collections.defaultdict(set)
     chunks = chunk_text(text, chunk_size, tokenizer)
     for chunk in chunks:

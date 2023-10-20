@@ -15,6 +15,7 @@ with open('download_nltk_data.py', 'r') as file:
 
 exec(code)
 
+api_key = st.secrets["API_KEY"]
 
 with st.sidebar:
     st.image(
@@ -144,7 +145,7 @@ elif st.session_state.page == "nlp":
     @st.cache_data(persist="disk")
     def do_zero_shot_classify(text):
         with st.spinner("Performing Zero-Shot Classification..."):
-            pred_label = zero_shot_classify(st.session_state.text)
+            pred_label = zero_shot_classify(st.session_state.text, api_key)
         st.subheader("Zero-Shot Classification")
         st.write(f"This text is predicted to be about {pred_label}.")
         return pred_label
@@ -154,7 +155,7 @@ elif st.session_state.page == "nlp":
     @st.cache_data(persist="disk")
     def do_summarize(text):
         with st.spinner("Performing Summarization..."):
-            summary = summarize_text(text)
+            summary = summarize_text(text, api_key)
         st.subheader("Summary")
         st.write(summary)
         return summary
@@ -164,7 +165,7 @@ elif st.session_state.page == "nlp":
     @st.cache_data(persist="disk")
     def do_ner(text):
         with st.spinner(f"Performing Named Entity Recognition..."):
-            ner_results = ner(text)
+            ner_results = ner(text, api_key)
             ner_results = {key: list(value) for key, value in ner_results.items()}
         st.subheader("Named Entities")
         markdown_str = "| Key | Value |\n| --- | ----- |\n" + "\n".join(
